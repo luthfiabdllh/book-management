@@ -7,7 +7,7 @@
 
 A robust RESTful API backend for managing a library system, built with NestJS and Supabase.
 
-**Live Demo URL:** [https://main-story-test-be.vercel.app/](https://main-story-test-be.vercel.app/)
+**Live Demo URL:** [https://main-story-test-be.vercel.app/api](https://main-story-test-be.vercel.app/api)
 
 ## 🚀 Technical Stack
 - **Framework:** NestJS (Node.js)
@@ -173,6 +173,12 @@ All endpoints require a valid **Supabase JWT Token**.
 - **Description:** Remove a book permanently.
 - **Path Parameters:**
   - `id`: UUID of the book
+
+```markdown
+### Postman Collection
+You can access the Postman collection for testing the API here:
+[🚀 View Postman Collection](https://www.postman.com/luthfiabdllh/mainstorytest/collection/39802831-d5b3ad18-2c1e-436b-aa79-8b155f6c0318?action=share&source=copy-link&creator=39802831)
+```
 
 ## ☁️ Deployment
 
