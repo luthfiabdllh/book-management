@@ -21,15 +21,36 @@ export class BooksService {
     }
   }
 
-  async findAll(page: number = 1, limit: number = 10) {
+  async findAll(
+    page: number = 1,
+    limit: number = 10,
+    search?: string,
+    orderBy: string = 'title',
+    order: 'asc' | 'desc' = 'asc',
+  ) {
     const skip = (page - 1) * limit;
+
+    // Validate orderBy field
+    const allowedFields = ['title', 'author', 'published_year', 'stock', 'created_at'];
+    const sortField = allowedFields.includes(orderBy) ? orderBy : 'title';
+
+    const where: Prisma.BookWhereInput = search
+      ? {
+          OR: [
+            { title: { contains: search, mode: 'insensitive' } },
+            { author: { contains: search, mode: 'insensitive' } },
+          ],
+        }
+      : {};
+
     const [data, total] = await this.prisma.$transaction([
       this.prisma.book.findMany({
+        where,
         skip,
         take: limit,
-        orderBy: { title: 'asc' },
+        orderBy: { [sortField]: order },
       }),
-      this.prisma.book.count(),
+      this.prisma.book.count({ where }),
     ]);
 
     return {

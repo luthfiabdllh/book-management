@@ -21,11 +21,14 @@ export class BooksController {
   findAll(
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
     @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number,
+    @Query('search') search?: string,
+    @Query('orderBy', new DefaultValuePipe('title')) orderBy?: string,
+    @Query('order', new DefaultValuePipe('asc')) order?: 'asc' | 'desc',
   ) {
     if (limit > 20) {
       throw new BadRequestException('Limit tidak boleh lebih dari 20');
     }
-    return this.booksService.findAll(page, limit);
+    return this.booksService.findAll(page, limit, search, orderBy, order);
   }
 
   @Get(':id')
