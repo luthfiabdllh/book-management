@@ -23,12 +23,13 @@ async function main() {
   console.log(`Created user with id: ${user.id}`);
 
   // Create 100 Dummy Books
-  const booksData = Array.from({ length: 100 }).map(() => ({
+  const booksData = Array.from({ length: 100 }).map((_, index) => ({
     title: faker.book.title(),
     author: faker.book.author(),
     isbn: faker.commerce.isbn(13),
     published_year: faker.date.past({ years: 50 }).getFullYear(),
     stock: faker.number.int({ min: 0, max: 100 }),
+    cover_image: `https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=400&h=600&fit=crop&q=80&sig=${index}`,
   }));
 
   for (const b of booksData) {

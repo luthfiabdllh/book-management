@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, IsInt, Min, IsISBN, Max } from 'class-validator';
+import { IsNotEmpty, IsString, IsInt, Min, IsISBN, Max, IsOptional, IsUrl } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateBookDto {
@@ -25,4 +25,9 @@ export class CreateBookDto {
   @IsInt({ message: 'Stok harus berupa angka bulat' })
   @Min(0, { message: 'Stok tidak boleh kurang dari 0' })
   stock: number;
+
+  @ApiProperty({ required: false })
+  @IsOptional()
+  @IsUrl({}, { message: 'Cover image harus berupa URL yang valid' })
+  cover_image?: string;
 }

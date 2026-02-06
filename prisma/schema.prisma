@@ -26,6 +26,7 @@ model Book {
   isbn           String   @unique @db.VarChar
   published_year Int
   stock          Int      @default(0)
+  cover_image    String?  @db.VarChar
   created_by     String?  @db.Uuid
   creator        User?    @relation("UserBooks", fields: [created_by], references: [id])
   created_at     DateTime @default(now()) @db.Timestamptz
