@@ -7,12 +7,12 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
 @ApiTags('books')
 @Controller('books')
+@UseGuards(AuthGuard('jwt'))
 @ApiBearerAuth()
 export class BooksController {
   constructor(private readonly booksService: BooksService) {}
 
   @Post()
-  @UseGuards(AuthGuard('jwt'))
   create(@Body() createBookDto: CreateBookDto, @Request() req) {
     return this.booksService.create(createBookDto, req.user.id);
   }
@@ -31,13 +31,11 @@ export class BooksController {
   }
 
   @Patch(':id')
-  @UseGuards(AuthGuard('jwt'))
   update(@Param('id', ParseUUIDPipe) id: string, @Body() updateBookDto: UpdateBookDto) {
     return this.booksService.update(id, updateBookDto);
   }
 
   @Delete(':id')
-  @UseGuards(AuthGuard('jwt'))
   remove(@Param('id', ParseUUIDPipe) id: string) {
     return this.booksService.remove(id);
   }
