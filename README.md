@@ -124,6 +124,9 @@ All endpoints require a valid **Supabase JWT Token**.
 - **Query Parameters:**
   - `page` (optional): Page number (default: 1)
   - `limit` (optional): Items per page (default: 10)
+  - `search` (optional): Search query (default: null)
+  - `orderBy` (optional): Field to order by (default: 'title')
+  - `order` (optional): Order direction (default: 'asc')
 - **Response:**
   \`\`\`json
   {
