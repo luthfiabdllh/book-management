@@ -13,7 +13,7 @@ export class CreateBookDto {
   author: string;
 
   @ApiProperty()
-  @IsISBN(undefined, { message: 'ISBN tidak valid' })
+  @IsISBN(13, { message: 'ISBN tidak valid' })
   isbn: string;
 
   @ApiProperty()
