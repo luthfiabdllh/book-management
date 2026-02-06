@@ -1,5 +1,6 @@
 import { PrismaClient } from '@prisma/client';
 import { v4 as uuidv4 } from 'uuid';
+import { faker } from '@faker-js/faker';
 
 // @ts-ignore: Prisma Client types might not be generated in this environment yet
 const prisma = new PrismaClient();
@@ -21,21 +22,18 @@ async function main() {
 
   console.log(`Created user with id: ${user.id}`);
 
-  // Create Dummy Books
-  const booksData = [
-    { title: 'Clean Code', author: 'Robert C. Martin', isbn: '978-0132350884', published_year: 2008, stock: 10 },
-    { title: 'The Pragmatic Programmer', author: 'Andy Hunt', isbn: '978-0201616224', published_year: 1999, stock: 5 },
-    { title: 'Design Patterns', author: 'Erich Gamma', isbn: '978-0201633610', published_year: 1994, stock: 8 },
-    { title: 'Refactoring', author: 'Martin Fowler', isbn: '978-0201485677', published_year: 1999, stock: 3 },
-    { title: 'JavaScript: The Good Parts', author: 'Douglas Crockford', isbn: '978-0596517748', published_year: 2008, stock: 12 },
-    { title: 'Effective Java', author: 'Joshua Bloch', isbn: '978-0134685991', published_year: 2018, stock: 7 },
-    { title: 'Introduction to Algorithms', author: 'Thomas H. Cormen', isbn: '978-0262033848', published_year: 2009, stock: 4 },
-    { title: 'Code Complete', author: 'Steve McConnell', isbn: '978-0735619678', published_year: 2004, stock: 6 },
-    { title: 'Head First Design Patterns', author: 'Eric Freeman', isbn: '978-0596007126', published_year: 2004, stock: 9 },
-    { title: 'You Don\'t Know JS', author: 'Kyle Simpson', isbn: '978-1491904244', published_year: 2014, stock: 11 },
-  ];
+  // Create 100 Dummy Books
+  const booksData = Array.from({ length: 100 }).map(() => ({
+    title: faker.book.title(),
+    author: faker.book.author(),
+    isbn: faker.commerce.isbn(13),
+    published_year: faker.date.past({ years: 50 }).getFullYear(),
+    stock: faker.number.int({ min: 0, max: 100 }),
+  }));
 
   for (const b of booksData) {
+    // Unique check is implicitly handled by upsert on ISBN, 
+    // but if faker generates duplicate, it just updates (no-op).
     const book = await prisma.book.upsert({
       where: { isbn: b.isbn },
       update: {},
@@ -44,9 +42,10 @@ async function main() {
         created_by: user.id,
       },
     });
-    console.log(`Created book: ${book.title}`);
+    // console.log(`Created book: ${book.title}`); // Commented out to reduce noise
   }
-
+  
+  console.log(`Seeded ${booksData.length} books.`);
   console.log('Seeding finished.');
 }
 
