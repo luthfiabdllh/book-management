@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
+import { Injectable, NotFoundException, ConflictException, BadRequestException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
@@ -79,6 +79,9 @@ export class BooksService {
         if (target.includes('isbn')) {
           throw new ConflictException('ISBN sudah terdaftar');
         }
+      }
+      if (error.code === 'P2003') {
+        throw new BadRequestException('Data referensi tidak ditemukan (User/Author tidak valid)');
       }
     }
     throw error;
