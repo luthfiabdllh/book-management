@@ -1,98 +1,180 @@
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
+  <a href="https://supabase.com/" target="blank"><img src="https://supabase.com/docs/img/supabase-logo.svg" width="120" alt="Supabase Logo" /></a>
 </p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+# Book Management Service
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+A robust RESTful API backend for managing a library system, built with NestJS and Supabase.
 
-## Description
+**Live Demo URL:** [https://main-story-test-be.vercel.app/](https://main-story-test-be.vercel.app/)
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## 🚀 Technical Stack
+- **Framework:** NestJS (Node.js)
+- **Database:** PostgreSQL (via Supabase)
+- **ORM:** Prisma
+- **Authentication:** Supabase Auth (JWT) guarded with Passport.js
+- **Validation:** Class-validator & Class-transformer
+- **Documentation:** Swagger (Scramble)
+- **Testing:** Jest (Unit & End-to-End)
 
-## Project setup
+## 🛠️ Prerequisites
+- Node.js (LTS version recommended)
+- npm
+- Supabase Project (with DATABASE_URL and DIRECT_URL)
 
-```bash
-$ npm install
-```
+## 📦 Installation
+1. **Clone the repository**
+   \`\`\`bash
+   git clone <repository_url>
+   cd book-management
+   \`\`\`
 
-## Compile and run the project
+2. **Install dependencies**
+   \`\`\`bash
+   npm install
+   \`\`\`
 
-```bash
-# development
-$ npm run start
+3. **Environment Setup**
+   Create a \`.env\` file in the root directory and configure the following variables:
+   \`\`\`env
+   DATABASE_URL="postgresql://postgres:[PASSWORD]@[HOST]:[PORT]/postgres?pgbouncer=true"
+   DIRECT_URL="postgresql://postgres:[PASSWORD]@[HOST]:[PORT]/postgres"
+   # Add your specific Supabase Secrets if applicable (e.g. JWT_SECRET)
+   \`\`\`
 
-# watch mode
-$ npm run start:dev
+4. **Database Migration & Seeding**
+   \`\`\`bash
+   # Run migrations
+   npm run migrate
 
-# production mode
-$ npm run start:prod
-```
+   # Seed database with dummy data (User & Books)
+   npm run seed
+   \`\`\`
 
-## Run tests
+## 🏃 Running the Application
 
-```bash
-# unit tests
-$ npm run test
+### Local Development
+\`\`\`bash
+# Standard mode
+npm run start
 
-# e2e tests
-$ npm run test:e2e
+# Watch mode (Hot-reload)
+npm run start:dev
+\`\`\`
 
-# test coverage
-$ npm run test:cov
-```
+### Production Build
+\`\`\`bash
+npm run build
+npm run start:prod
+\`\`\`
 
-## Deployment
+The server will start on \`http://localhost:3000\`.
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+## 🧪 Testing
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+This project includes comprehensive automated tests ensuring reliability.
 
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
-```
+### Unit Tests
+Tests individual components like Services and Controllers.
+\`\`\`bash
+npm run test
+\`\`\`
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+### End-to-End (E2E) Tests
+Tests complete API flows (Mocked DB for speed/reliability).
+\`\`\`bash
+npm run test:e2e
+\`\`\`
 
-## Resources
+### Test Coverage
+View detailed coverage reports.
+\`\`\`bash
+npm run test:cov
+\`\`\`
 
-Check out a few resources that may come in handy when working with NestJS:
+## 📖 API Documentation
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+The API is fully documented and deployed.
 
-## Support
+**Base URL:** \`https://main-story-test-be.vercel.app\`
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+### Authentication
+All endpoints require a valid **Supabase JWT Token**.
+- **Header:** \`Authorization: Bearer <your_access_token>\`
 
-## Stay in touch
+### Endpoints
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+### Endpoints
 
-## License
+#### 1. Authentication
+**`POST /auth/login`**
+- **Description:** Login to receive JWT Access Token.
+- **Body:**
+  \`\`\`json
+  {
+    "email": "admin@example.com",
+    "password": "password123"
+  }
+  \`\`\`
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+#### 2. Get All Books
+**`GET /books`**
+- **Description:** Retrieve a paginated list of books.
+- **Query Parameters:**
+  - `page` (optional): Page number (default: 1)
+  - `limit` (optional): Items per page (default: 10)
+- **Response:**
+  \`\`\`json
+  {
+    "data": [ ... ],
+    "meta": {
+      "total": 100,
+      "page": 1,
+      "last_page": 10
+    }
+  }
+  \`\`\`
+
+#### 3. Get Book by ID
+**`GET /books/:id`**
+- **Description:** Retrieve details of a specific book.
+- **Path Parameters:**
+  - `id`: UUID of the book
+- **Response:** object
+
+#### 4. Create Book
+**`POST /books`**
+- **Description:** Add a new book to the library.
+- **Body:**
+  \`\`\`json
+  {
+    "title": "Clean Code",
+    "author": "Robert C. Martin",
+    "isbn": "978-0132350884",
+    "published_year": 2008,
+    "stock": 10
+  }
+  \`\`\`
+
+#### 5. Update Book
+**`PATCH /books/:id`**
+- **Description:** Update an existing book.
+- **Body:** (Partial update supported)
+  \`\`\`json
+  {
+    "stock": 15,
+    "title": "Clean Code (Updated)"
+  }
+  \`\`\`
+
+#### 6. Delete Book
+**`DELETE /books/:id`**
+- **Description:** Remove a book permanently.
+- **Path Parameters:**
+  - `id`: UUID of the book
+
+## ☁️ Deployment
+
+This project is configured for Vercel deployment but can be deployed to any node-compatible host.
+Refer to [NestJS Deployment Docs](https://docs.nestjs.com/deployment) for details.
