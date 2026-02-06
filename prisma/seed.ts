@@ -32,20 +32,19 @@ async function main() {
     cover_image: `https://images.unsplash.com/photo-1544947950-fa07a98d237f?w=400&h=600&fit=crop&q=80&sig=${index}`,
   }));
 
-  for (const b of booksData) {
-    // Unique check is implicitly handled by upsert on ISBN, 
-    // but if faker generates duplicate, it just updates (no-op).
-    const book = await prisma.book.upsert({
-      where: { isbn: b.isbn },
-      update: {},
-      create: {
-        ...b,
-        created_by: user.id,
-      },
-    });
-    // console.log(`Created book: ${book.title}`); // Commented out to reduce noise
-  }
-  
+  // Delete existing books first to avoid conflicts
+  await prisma.book.deleteMany({});
+  console.log('Cleared existing books');
+
+  // Create books using createMany (more efficient)
+  await prisma.book.createMany({
+    data: booksData.map((b) => ({
+      ...b,
+      created_by: user.id,
+    })),
+    skipDuplicates: true,
+  });
+
   console.log(`Seeded ${booksData.length} books.`);
   console.log('Seeding finished.');
 }
