@@ -1,19 +1,24 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class BooksService {
   constructor(private prisma: PrismaService) {}
 
   async create(createBookDto: CreateBookDto, userId: string) {
-    return this.prisma.book.create({
-      data: {
-        ...createBookDto,
-        created_by: userId,
-      },
-    });
+    try {
+      return await this.prisma.book.create({
+        data: {
+          ...createBookDto,
+          created_by: userId,
+        },
+      });
+    } catch (error) {
+      this.handlePrismaError(error);
+    }
   }
 
   async findAll(page: number = 1, limit: number = 10) {
@@ -49,10 +54,14 @@ export class BooksService {
 
   async update(id: string, updateBookDto: UpdateBookDto) {
     await this.findOne(id); // Ensure exists
-    return this.prisma.book.update({
-      where: { id },
-      data: updateBookDto,
-    });
+    try {
+      return await this.prisma.book.update({
+        where: { id },
+        data: updateBookDto,
+      });
+    } catch (error) {
+      this.handlePrismaError(error);
+    }
   }
 
   async remove(id: string) {
@@ -61,5 +70,17 @@ export class BooksService {
       where: { id },
     });
     return { message: 'Book deleted successfully' };
+  }
+
+  private handlePrismaError(error: any) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === 'P2002') {
+        const target = (error.meta?.target as string[]) || [];
+        if (target.includes('isbn')) {
+          throw new ConflictException('ISBN sudah terdaftar');
+        }
+      }
+    }
+    throw error;
   }
 }
